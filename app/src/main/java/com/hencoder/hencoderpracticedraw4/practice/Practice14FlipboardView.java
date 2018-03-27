@@ -80,6 +80,7 @@ public class Practice14FlipboardView extends View {
 
         canvas.save();
 
+        /*
         //2.下半部分绘制
         if (degree<90){
             //90以内 需要遮挡上半部的图片旋转，所以，只需要绘制 h/2 以下的部分
@@ -88,6 +89,8 @@ public class Practice14FlipboardView extends View {
             //90 - 180，之前的上半部分旋转到下半部分，这时需要遮挡下半部分
             canvas.clipRect(0, 0, getWidth(), centerY);
         }
+        */
+
         camera.save();
         camera.rotateX(degree);
         canvas.translate(centerX, centerY);// step 2
@@ -95,6 +98,8 @@ public class Practice14FlipboardView extends View {
         canvas.translate(-centerX, -centerY);// step 1
         camera.restore();
 
+        //最后确定绘制的区域（下半部分），这样可以确保所有展示的部分都在下半区域，不需要进行角度的判断（隐藏上半部分和隐藏下半部分）
+        canvas.clipRect(0, centerY, getWidth(), getHeight());
         canvas.drawBitmap(bitmap, l, t, paint);//中心点绘制
         canvas.restore();
     }
