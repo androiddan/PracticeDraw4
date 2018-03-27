@@ -38,7 +38,19 @@ public class Practice05RotateView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        int w = bitmap.getWidth() / 2;
+        int h = bitmap.getHeight() / 2;
+
+        //旋转180
+        canvas.save();
+        canvas.rotate(180, point1.x + w, point1.y + h);
         canvas.drawBitmap(bitmap, point1.x, point1.y, paint);
+        canvas.restore();
+
+        //旋转45
+        canvas.save();
+        canvas.rotate(45, point2.x + w, point2.y + h);
         canvas.drawBitmap(bitmap, point2.x, point2.y, paint);
+        canvas.restore();
     }
 }

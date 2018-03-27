@@ -12,6 +12,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -47,6 +49,13 @@ public class Practice13CameraRotateHittingFaceView extends View {
         animator.setDuration(5000);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float newZ = - displayMetrics.density * 6;// 红mi4 newZ=18，那么设置的坐标系为(0,0,-18),默认是(0, 0, -576)，明显更加近了，为什么？？？
+        Log.e("TAG", "instance initializer: ======"+newZ);
+        camera.setLocation(0,0,-newZ);//如何确定z轴需要移动的距离呢？？一点点的尝试？
+                                             //如果存在糊脸效果，则说明相机和图片的距离过近，需要吧相机往后拉
+
     }
 
     @Override
@@ -64,6 +73,7 @@ public class Practice13CameraRotateHittingFaceView extends View {
     @SuppressWarnings("unused")
     public void setDegree(int degree) {
         this.degree = degree;
+        Log.e("TAG", "setDegree: ================="+degree);
         invalidate();
     }
 

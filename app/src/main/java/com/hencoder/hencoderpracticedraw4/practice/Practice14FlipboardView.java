@@ -69,19 +69,33 @@ public class Practice14FlipboardView extends View {
         int bitmapHeight = bitmap.getHeight();
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-        int x = centerX - bitmapWidth / 2;
-        int y = centerY - bitmapHeight / 2;
+        int l = centerX - bitmapWidth / 2;
+        int t = centerY - bitmapHeight / 2;
+
+        // 1.绘制上半部分，保持图片一半
+        canvas.save();
+        canvas.clipRect(0, 0, getWidth(), centerY);
+        canvas.drawBitmap(bitmap, l, t, paint);
+        canvas.restore();
 
         canvas.save();
 
+        //2.下半部分绘制
+        if (degree<90){
+            //90以内 需要遮挡上半部的图片旋转，所以，只需要绘制 h/2 以下的部分
+            canvas.clipRect(0, centerY, getWidth(), getHeight());
+        }else {
+            //90 - 180，之前的上半部分旋转到下半部分，这时需要遮挡下半部分
+            canvas.clipRect(0, 0, getWidth(), centerY);
+        }
         camera.save();
         camera.rotateX(degree);
-        canvas.translate(centerX, centerY);
+        canvas.translate(centerX, centerY);// step 2
         camera.applyToCanvas(canvas);
-        canvas.translate(-centerX, -centerY);
+        canvas.translate(-centerX, -centerY);// step 1
         camera.restore();
 
-        canvas.drawBitmap(bitmap, x, y, paint);
+        canvas.drawBitmap(bitmap, l, t, paint);//中心点绘制
         canvas.restore();
     }
 }
